@@ -1,0 +1,53 @@
+
+<table class='table table-bordered table-striped'>
+  <thead>
+    <th>参数名</th>
+    <th>参数类型</th>
+    <th>描述</th>
+  </thead>
+
+  <tbody>
+    <% unless @params.nil? || @params.length == 0 %>
+      <% @params.each do |param| %>
+        <% if @type == 'params' %>
+          <% format_param(param) %>
+        <% elsif @type == 'return' || @type == 'error' %>
+          <% format_response_param(param); %>
+        <% else %>
+          <% format_other_param(param) %>
+        <% end %>
+
+        <tr>
+          <% ['name', 'type'].each do |key| %>
+            <td><%= param[key] %></td>
+          <% end %>
+
+          <td>
+            <%= param['val'] %>
+
+            <% if param['children'] %>
+              <% param['children'].each do |cp| %>
+                <p style='padding-left: <%= (cp['level'] - 1) * 20 %>px'>
+                  <%= cp['desc'] %>
+                </p>
+              <% end %>
+            <% end %>
+          </td>
+
+        </tr>
+      <% end %>
+    <% else %>
+      <tr>
+        <td>error</td>
+        <td>String</td>
+        <td>错误标识</td>
+      </tr>
+
+      <tr>
+        <td>error_description</td>
+        <td>String</td>
+        <td>错误具体描述</td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

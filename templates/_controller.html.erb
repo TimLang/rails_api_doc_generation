@@ -1,0 +1,71 @@
+<% @documents.each do |controller| %>
+  <div class='controller' id='<%= controller_identifer(controller['Klass']) %>'>
+    <h2 class='controller-title'><%= controller['About']['Desc'] %></h2>
+
+    <div class='action'>
+      <% controller['About'].each do |key, val| %>
+        <% next if %w{Desc}.include?(key.to_s) %>
+
+        <h4><%= key %></h4>
+        <% unless val && (val.is_a?(Array) && val.length > 1) %>
+          <p>
+            <% if val.is_a?(Array) %>
+              <%= val.first.try('fetch', 'desc') %>
+            <% else %>
+              <%= val %>
+            <% end %>
+          </p>
+        <% else %>
+          <%= render 'params_table', :params => controller['About'][key] %>
+        <% end %>
+      <% end %>
+    </div>
+    <hr />
+
+    <% controller['Actions'].each_with_index do |action, i| %>
+      <% next if @level && !@level.include?(action['Level'].strip) %>
+
+      <div class='action action-<%= i % 2 == 0 ? 'even' : 'odd' %>'
+          id='<%= action_identifer(controller['Klass'], action['Name']) %>'>
+
+        <h4>功能说明</h4>
+        <p class='about text-info'><%= action['Desc'] %></p>
+
+        <h4>请求地址</h4>
+        <p class='about text-info'><%= action['Path'] %></p>
+
+        <h4>请求方法</h4>
+        <p class='about text-info'><%= action['Method'] %></p>
+
+        <h4>参数说明</h4>
+        <%= render 'params_table', :params => action['Params'] || [], :type => 'params' %>
+
+        <h4>正常返回信息</h4>
+        <p class='about text-info'>正常完成时response.status 为 200.</p>
+        <%= render 'params_table', :params => action['Return'] || [], :type => 'return' %>
+
+        <h4>出错误时信息</h4>
+        <p class='about text-info'>出错时response.status 为 400.</p>
+        <%= render 'params_table', :params => action['Error'] || [], :type => 'error' %>
+
+        <% action.each do |key, val| %>
+          <% next if %w{Desc Path Method Params Return Error Name}.include?(key.to_s) %>
+          <h4><%= key %></h4>
+          <% unless val && (val.is_a?(Array) && val.length > 1) %>
+            <p>
+              <% if val.is_a?(Array) %>
+                <%= val.first.try('fetch', 'desc') %>
+              <% else %>
+                <%= val %>
+              <% end %>
+            </p>
+          <% else %>
+            <%= render 'params_table', :params => action[key] %>
+          <% end %>
+        <% end %>
+        <br /><hr />
+      </div>
+    <% end %>
+
+  </div>
+<% end %>

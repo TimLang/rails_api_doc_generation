@@ -1,0 +1,58 @@
+$(function(){
+  var no_print_class = 'no_print';
+  var iframe = $('.helper_iframe')[0];
+  var idoc = iframe.contentDocument;
+
+
+  // 设置勾选内容的打印及显示
+  // 添加或移除no_print类
+  $('.print_selector').change(function(event){
+    var $this = $(this);
+    var $a = $this.next();
+    var $top = $a.parent();
+    var $target_el = $($a.attr('href'));
+
+    if ($this.is(":checked")) {
+      $top.removeClass(no_print_class)
+      $target_el.removeClass(no_print_class);
+    } else {
+      $top.addClass(no_print_class)
+      $target_el.addClass(no_print_class);
+    }
+  });
+
+  
+  // 下载保存勾选的内容
+  $("a.save_to_file").click(function(event){
+    var head = document.head.innerHTML;
+    idoc.body.innerHTML = document.body.innerHTML;
+
+    $(idoc.body).find("." + no_print_class).remove();
+
+    var html = '<html><head>';
+    html += head + '</head><body>';
+    html += idoc.body.innerHTML + '</body></html>';
+
+    window.open('data:application/octet-stream;charset=utf-8,' + encodeURIComponent(html));
+    return false;
+  });
+
+
+  // 合并文档
+  $("#merge_doc").change(function(event){
+    var fr = new FileReader();
+
+    fr.onloadend = function(e){
+      var $body = $(document.body);
+      idoc.write(this.result);
+
+      var menus = $(idoc.body).find(".list>ul>li");
+      var controllers = $(idoc.body).find(".controller");
+
+      $body.find(".list>ul").append(menus);
+      $body.append(controllers);
+    }
+
+    fr.readAsText(this.files[0]);
+  });
+});

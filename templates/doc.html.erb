@@ -1,0 +1,117 @@
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html;charset=utf-8">
+    
+    <title>Uasthree Api Documents</title>
+    <style type='text/css'>
+      .title {
+        text-align: center;
+        color: blank;
+      }
+
+      .controller, .list {
+        width: 900px;
+        border: 1px solid;
+        margin: 20px auto 40 auto;
+      }
+
+      .controller-title {
+        text-align: center;
+      }
+
+      .action {
+        margin-top: 40px;
+        padding: 20px 40px 20px 0px;
+      }
+
+      .action-even {
+        background-color: #efffef;
+      }
+
+      .action-odd {
+        background-color: #fff;
+      }
+
+
+      .desc-one {
+        padding-left: 20px;
+      }
+
+      .desc-two {
+        padding-left: 40;
+      }
+
+      .desc-val {
+        color: #808;
+      }
+
+      .desc-key {
+        display: inline-block;
+        width: 100px;
+      }
+
+      .desc-many {
+        width: auto;
+      }
+    </style>
+  </head>
+
+  <body>
+    <h1 class='title'>Uasthree Api Document</h1>
+
+    <div class='list'>
+      <ul>
+        <% @documents.each do |controller| %>
+          <li>
+            <a href='#controller-<%= controller[:klass] %>'><%= controller[:klass] %></a>
+
+            <ul class='ul-controller'>
+              <% controller[:actions].each do |action| %>
+                <li>
+                  <a href='#<%= action_identifer(controller[:klass], action[:name]) %>'>
+                    <%= action[:desc] %>
+                  </a>
+                </li>
+              <% end %>
+            </ul>
+
+          </li>
+        <% end %>
+      </ul>
+    </div>
+
+    <% @documents.each do |controller| %>
+      <div class='controller' id='controller-<%= controller[:klass] %>'>
+        <h2 class='controller-title'><%= controller[:klass] %></h2>
+        
+        <% controller[:actions].each_with_index do |action, i| %>
+          <div class='action action-<%= i % 2 == 0 ? 'even' : 'odd' %>'
+              id='<%= action_identifer(controller[:klass], action[:name]) %>'>
+            <strong class='desc-one'><%= action[:desc] %></strong>
+
+            <% action.each do |key, val| %>
+              <% if Array === val %>
+                <p class='desc-one'>
+                  <span class='desc-key desc-many'><%= key %>:</span>
+                </p>
+
+                <% val.each do |v| %>
+                  <p class='desc-two desc-val' style='padding-left: <%= (v[:level] + 1) * 20 %>px;'>
+                    <%= v[:desc] %>
+                  </p>
+                <% end %>
+              <% elsif not key.to_s =~ /^(desc|name)$/ %>
+                <p class='desc-one'>
+                  <span class='desc-key'><%= key %><%= val.length > 0 ? ':' : '' %></span>
+                  <span class='desc-val'><%= val %></span>
+                </p>
+              <% end %>
+
+            <% end %>
+          </div>
+        <% end %>
+
+      </div>
+    <% end %>
+  </body>
+</html>

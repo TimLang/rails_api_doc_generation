@@ -1,0 +1,38 @@
+<div class='list'>
+  <strong class='no_print no_opacity about'>* 被勾选的内容才会被打印、保存</strong>
+
+  <div class='helpers'>
+    <label for='merge_doc' class='btn no_print no_opacity'>合并文档...</label>
+    <input type='file' id='merge_doc' style='display:none'/>
+
+    <a href='#' class='no_print no_opacity btn save_to_file'>保存到新文件</a>
+
+    <iframe class='helper_iframe' style='display:none'></iframe>
+  </div>
+
+  <ul>
+    <% @documents.each do |controller| %>
+      <li>
+        <input type='checkbox' class='no_print no_opacity print_selector' checked=1 />
+        <a href='#<%= controller_identifer(controller['Klass']) %>'>
+          <%= controller['About']['Desc'] %>
+        </a>
+
+        <ul class='ul-controller'>
+          <% controller['Actions'].each do |action| %>
+            <% next if @level && !@level.include?(action['Level'].strip) %>
+
+            <li>
+              <input type='checkbox' class='no_print no_opacity print_selector' checked=1 />
+              <a href='#<%= action_identifer(controller['Klass'], action['Name']) %>'>
+                <%= action['Desc'] %>
+              </a>
+            </li>
+          <% end %>
+        </ul>
+
+      </li>
+    <% end %>
+  </ul>
+</div>
+    
