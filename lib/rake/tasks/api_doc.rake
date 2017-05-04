@@ -17,14 +17,14 @@ namespace :doc do
     
     case out_format
     when 'simple_html'
-      path = "./tmp/api_doc.html"
+      path = "./public/api_doc.html"
       puts "out_path: #{path}"
 
       File.open(path, "w+") do |f|
         f.write(generation.generate_html_string(:level => level))
       end
     when 'detailed_html'
-      path = "./tmp/api_doc.html"
+      path = "./public/api_doc.html"
       puts "Out path: #{path}"
 
       File.open(path, 'w+') do |f|
