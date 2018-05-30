@@ -39,7 +39,7 @@ d
   # Other: ...
   class Api::UsersController < class Api::BaseController
     # 取得所有用户
-    # 
+    #
     # Params:
     #   page: [Integer] 类似page, per_page等可以不写描述，能自己生成说明
     #   per_page: [Integer] 每页数量
@@ -52,9 +52,11 @@ d
     end
 
     # (api说明)取得一个用户的信息
-    # 
+    #
     # Params:
     #   user_id: [String:required] #用户的id, required生成文档显示必传参数
+    # ReturnType: #ReturnType如果不写的话默认Object, 如需要告诉客户端返回的是一个Array
+    #   Array
     # Return:
     #   name: [String] xxx
         address: [Object] #支持返回值嵌套Object
@@ -68,7 +70,7 @@ d
     end
 
     # 自定义路由
-    # 
+    #
     # Path: /path/to/api
     # Method: POST
     # Params:
