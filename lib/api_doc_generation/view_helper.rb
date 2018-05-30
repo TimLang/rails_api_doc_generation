@@ -6,7 +6,7 @@ module ApiDocGeneration; class ViewHelper
 
   rescue => e
     e.backtrace[0].gsub!(/^\(erb\)/, file_path)
-    
+
     raise e
   end
 
@@ -14,7 +14,7 @@ module ApiDocGeneration; class ViewHelper
   # {:a => 1, :b => 2}
   def initialize(args)
     @args = args
-    
+
     args.each do |key, val|
       self.instance_variable_set("@#{key}", val)
     end
@@ -69,7 +69,7 @@ module ApiDocGeneration; class ViewHelper
     when 'page'
       param['type'] = 'Integer'
       param['val'] = '返回所有数据中的第几页'
-    when 'perpage'
+    when 'per_page'
       param['type'] = 'Integer'
       param['val'] = '返回数据每页多少条'
     end
@@ -83,7 +83,7 @@ module ApiDocGeneration; class ViewHelper
     when 'current_page'
       param['type'] = 'Integer'
       param['val'] = '当前返回数据是第几页'
-    when 'perpage'
+    when 'per_page'
       param['type'] = 'Integer'
       param['val'] = '每页返回的数据量'
     when 'count'
@@ -100,6 +100,14 @@ module ApiDocGeneration; class ViewHelper
 
 
   def format_other_param(param)
-    
   end
+
+  def get_return_type action
+    if action['ReturnType']
+      action['ReturnType'][0] && action['ReturnType'][0]['desc']
+    else
+      'Object'
+    end
+  end
+
 end; end

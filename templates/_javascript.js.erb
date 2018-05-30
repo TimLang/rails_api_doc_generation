@@ -33,7 +33,8 @@ $(function(){
     html += head + '</head><body>';
     html += idoc.body.innerHTML + '</body></html>';
 
-    window.open('data:application/octet-stream;charset=utf-8,' + encodeURIComponent(html));
+    content = 'data:application/octet-stream;charset=utf-8;filename=apidoc.html,' + encodeURIComponent(html)
+    window.open(content, 'apidoc.html');
     return false;
   });
 

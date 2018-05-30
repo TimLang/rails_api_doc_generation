@@ -62,7 +62,7 @@ module ApiDocGeneration; module FormatFile; class << self
     controller = klass.to_s.gsub(/Controller$/, '').underscore
 
     (@routes ||= rails_routes).each do |route|
-      if route[:reqs] == "#{controller}##{action}"
+      if route[:reqs].sub(/[[:blank:]]*{:format=\>[[:blank:]]*"json"}/,'') == "#{controller}##{action}"
         return {
           'Path' => route[:path].gsub('(.:format)', ''),
           'Method' => route[:verb]

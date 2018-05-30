@@ -2,24 +2,26 @@
   <div class='controller' id='<%= controller_identifer(controller['Klass']) %>'>
     <h2 class='controller-title'><%= controller['About']['Desc'] %></h2>
 
-    <div class='action'>
-      <% controller['About'].each do |key, val| %>
-        <% next if %w{Desc}.include?(key.to_s) %>
+    <% if controller['About'].size > 1 %>
+      <div class='action'>
+        <% controller['About'].each do |key, val| %>
+          <% next if %w{Desc}.include?(key.to_s) %>
 
-        <h4><%= key %></h4>
-        <% unless val && (val.is_a?(Array) && val.length > 1) %>
-          <p>
-            <% if val.is_a?(Array) %>
-              <%= val.first.try('fetch', 'desc') %>
-            <% else %>
-              <%= val %>
-            <% end %>
-          </p>
-        <% else %>
-          <%= render 'params_table', :params => controller['About'][key] %>
+          <h4><%= key %></h4>
+          <% unless val && (val.is_a?(Array) && val.length > 1) %>
+            <p>
+              <% if val.is_a?(Array) %>
+                <%= val.first.try('fetch', 'desc') %>
+              <% else %>
+                <%= val %>
+              <% end %>
+            </p>
+          <% else %>
+            <%= render 'params_table', :params => controller['About'][key] %>
+          <% end %>
         <% end %>
-      <% end %>
-    </div>
+      </div>
+    <% end %>
     <hr />
 
     <% controller['Actions'].each_with_index do |action, i| %>
@@ -40,16 +42,22 @@
         <h4>参数说明</h4>
         <%= render 'params_table', :params => action['Params'] || [], :type => 'params' %>
 
-        <h4>正常返回信息</h4>
-        <p class='about text-info'>正常完成时response.status 为 200.</p>
-        <%= render 'params_table', :params => action['Return'] || [], :type => 'return' %>
+        <h4>返回类型</h4>
+        <p class='about text-info'><%= get_return_type(action) %></p>
+        <% if false %>
+          <h4>正常返回信息</h4>
+          <p class='about text-info'>正常完成时response.status 为 200.</p>
+        <% end %>
+        <%= render 'params_table', :params => action['Return'] || [], :type => 'return', :is_response => true %>
 
-        <h4>出错误时信息</h4>
-        <p class='about text-info'>出错时response.status 为 400.</p>
+        <% if false %>
+          <h4>出错误时信息</h4>
+          <p class='about text-info'>出错时response.status 为 400.</p>
         <%= render 'params_table', :params => action['Error'] || [], :type => 'error' %>
+        <% end %>
 
         <% action.each do |key, val| %>
-          <% next if %w{Desc Path Method Params Return Error Name}.include?(key.to_s) %>
+          <% next if %w{Desc Path Method Params Return Error Name ReturnType Level}.include?(key.to_s) %>
           <h4><%= key %></h4>
           <% unless val && (val.is_a?(Array) && val.length > 1) %>
             <p>

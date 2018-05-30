@@ -1,8 +1,8 @@
 
 <table class='table table-bordered table-striped'>
   <thead>
-    <th>参数名</th>
-    <th>参数类型</th>
+    <th><%= @is_response ? '属性名' : '参数名' %></th>
+    <th>类型</th>
     <th>描述</th>
   </thead>
 
@@ -19,18 +19,38 @@
 
         <tr>
           <% ['name', 'type'].each do |key| %>
-            <td><%= param[key] %></td>
+            <% if key == 'type' %>
+              <td>
+                <%= param[key] %>
+                <% if param['required'] %>
+                  <span style='color:red'>【required】</span>
+                <% end %>
+              </td>
+            <% else %>
+              <td><%= param[key] %></td>
+            <% end %>
           <% end %>
 
           <td>
             <%= param['val'] %>
 
             <% if param['children'] %>
-              <% param['children'].each do |cp| %>
-                <p style='padding-left: <%= (cp['level'] - 1) * 20 %>px'>
-                  <%= cp['desc'] %>
-                </p>
-              <% end %>
+              <table class='table table-bordered table-striped'>
+                 <thead>
+                  <th>属性名</th>
+                  <th>类型</th>
+                  <th>描述</th>
+                </thead>
+                <tbody>
+                  <% param['children'].each do |cp| %>
+                    <tr>
+                      <td><%= cp['name'] %></td>
+                      <td><%= cp['type'] %></td>
+                      <td></td>
+                    </tr>
+                  <% end %>
+                </tbody>
+              </table>
             <% end %>
           </td>
 

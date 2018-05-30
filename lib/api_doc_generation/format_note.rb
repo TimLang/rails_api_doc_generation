@@ -71,12 +71,13 @@ module ApiDocGeneration; module FormatNote; class << self
       end
       tmp.clear
     else
-      m = desc.match(/(?<name>\w+.*:)\:?\s*((\[(?<type>.*?)\]\s*)?(?<val>.*))?$/)
+      m = desc.match(/(?<name>\w+.*?:)\:?\s*((\[(?<type>.*?)(?<required>:required)??)\]\s*?(?<val>.*))?$/)
       p = {'level' => level, 'desc' => desc}
 
       p.merge!({
-        'name' => m[:name],
+        'name' => m[:name]&.sub(/[:：]/,''),
         'type' => m[:type],
+        'required' => m[:required].nil? ? false : true,
         'val' => m[:val]
       }) if m
 
