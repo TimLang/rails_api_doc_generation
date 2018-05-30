@@ -41,8 +41,8 @@ d
     # 取得所有用户
     # 
     # Params:
-    #   page: [Integer] 页数
-    #   perpage: [Integer] 每页数量
+    #   page: [Integer] 类似page, per_page等可以不写描述，能自己生成说明
+    #   per_page: [Integer] 每页数量
     # Return:
     #   count: [Integer] 数据总条数
     #   items: [Array] 当前页数据的数组
@@ -54,9 +54,12 @@ d
     # (api说明)取得一个用户的信息
     # 
     # Params:
-    #   user_id: [String] 用户的id
+    #   user_id: [String:required] #用户的id, required生成文档显示必传参数
     # Return:
     #   name: [String] xxx
+        address: [Object]
+          zip: [Integer] 邮编
+          detail: [String] 详细地址 #支持返回值嵌套Object
     # Error:
     #   info: [String] 自己定义的错误信息
     #   other: [String] 如果不设置的，将生成默认的
