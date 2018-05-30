@@ -57,9 +57,9 @@ d
     #   user_id: [String:required] #用户的id, required生成文档显示必传参数
     # Return:
     #   name: [String] xxx
-        address: [Object]
+        address: [Object] #支持返回值嵌套Object
           zip: [Integer] 邮编
-          detail: [String] 详细地址 #支持返回值嵌套Object
+          detail: [String] 详细地址
     # Error:
     #   info: [String] 自己定义的错误信息
     #   other: [String] 如果不设置的，将生成默认的
