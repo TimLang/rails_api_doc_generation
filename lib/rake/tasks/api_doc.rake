@@ -1,4 +1,6 @@
 
+require 'rake'
+
 namespace :doc do
   task :api => :environment do
     require 'api_doc_generation'
